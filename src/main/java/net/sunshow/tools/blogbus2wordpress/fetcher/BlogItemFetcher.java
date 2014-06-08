@@ -3,17 +3,22 @@ package net.sunshow.tools.blogbus2wordpress.fetcher;
 import net.sunshow.tools.blogbus2wordpress.bean.BlogItem;
 import net.sunshow.tools.blogbus2wordpress.bean.BlogItemAttachment;
 import net.sunshow.tools.blogbus2wordpress.bean.BlogItemComment;
-import net.sunshow.tools.blogbus2wordpress.utils.DateUtils;
 import org.apache.commons.lang.StringUtils;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
-import org.htmlparser.filters.*;
+import org.htmlparser.filters.AndFilter;
+import org.htmlparser.filters.CssSelectorNodeFilter;
+import org.htmlparser.filters.NotFilter;
+import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.tags.ImageTag;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: sunshow
@@ -28,7 +33,7 @@ public class BlogItemFetcher {
      * @return 文章对象
      * @throws Exception
      */
-    public BlogItem fetch(String url) throws Exception {
+    public static BlogItem fetch(String url) throws Exception {
         Map<String, String> headerParams = new HashMap<String, String>();
         headerParams.put("Referer", "http://www.blogbus.com/");
         headerParams.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36");
@@ -79,6 +84,8 @@ public class BlogItemFetcher {
                                                                 ImageTag imageTag = (ImageTag) linkTag.getFirstChild();
                                                                 attachment.setSrc(imageTag.getImageURL());
 
+                                                                attachment.setFilename(StringUtils.substringAfterLast(attachment.getSrc(), "/"));
+
                                                                 attachmentList.add(attachment);
                                                             }
                                                         }
@@ -108,7 +115,7 @@ public class BlogItemFetcher {
             blogItem.setPostId(postId);
             blogItem.setTitle(title);
 
-            blogItem.setPubDate(DateUtils.parseLongDate(postDate + " " + postTime));
+            blogItem.setPubDate(postDate + " " + postTime);
 
         }
 
@@ -129,15 +136,14 @@ public class BlogItemFetcher {
                 blogItemComment.setContent(content);
 
                 parser.setInputHTML(html);
-                Date pubDate = DateUtils.parseLongDate(parser.extractAllNodesThatMatch(new CssSelectorNodeFilter("span[class='time']")).elementAt(0).toPlainTextString());
-                blogItemComment.setPubDate(pubDate);
+                blogItemComment.setPubDate(parser.extractAllNodesThatMatch(new CssSelectorNodeFilter("span[class='time']")).elementAt(0).toPlainTextString());
 
                 parser.setInputHTML(html);
                 NodeList urlNodeList = parser.extractAllNodesThatMatch(new CssSelectorNodeFilter("div[class='menubar'] span[class='author'] a"));
                 if (urlNodeList.size() > 0) {
                     LinkTag linkTag = (LinkTag)urlNodeList.elementAt(0);
                     blogItemComment.setUrl(linkTag.getLink());
-                    blogItemComment.setAuthor(linkTag.getText());
+                    blogItemComment.setAuthor(linkTag.toPlainTextString());
                 } else {
                     parser.setInputHTML(html);
                     String author = StringUtils.substringBefore(parser.extractAllNodesThatMatch(new CssSelectorNodeFilter("div[class='menubar'] span[class='author']")).elementAt(0).toPlainTextString(), " ");
@@ -159,7 +165,7 @@ public class BlogItemFetcher {
      * @return 单页内的文章地址列表
      * @throws Exception
      */
-    public List<String> fetchItemUrlList(String pageUrl) throws Exception {
+    public static List<String> fetchItemUrlList(String pageUrl) throws Exception {
         Map<String, String> headerParams = new HashMap<String, String>();
         headerParams.put("Referer", "http://www.blogbus.com/");
         headerParams.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36");
@@ -178,12 +184,10 @@ public class BlogItemFetcher {
     }
 
     public static void main(String[] args) throws Exception {
-//        String url = "http://8000km.blogbus.com/logs/5107910.html";
-//        BlogItemFetcher fetcher = new BlogItemFetcher();
-//        BlogItem blogItem = fetcher.fetch(url);
+        String url = "http://8000km.blogbus.com/logs/270341731.html";
+        fetch(url);
 
-        String url = "http://8000km.blogbus.com/index_57.html";
-        BlogItemFetcher fetcher = new BlogItemFetcher();
-        fetcher.fetchItemUrlList(url);
+//        String url = "http://8000km.blogbus.com/index_57.html";
+//        fetchItemUrlList(url);
     }
 }

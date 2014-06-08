@@ -1,7 +1,5 @@
 package net.sunshow.tools.blogbus2wordpress.bean;
 
-import java.util.Date;
-
 /**
  * 评论
  * User: sunshow
@@ -12,7 +10,7 @@ public class BlogItemComment {
 
     private String author;
     private String url;
-    private Date pubDate;
+    private String pubDate;
     private String content;
 
     public String getAuthor() {
@@ -31,11 +29,11 @@ public class BlogItemComment {
         this.url = url;
     }
 
-    public Date getPubDate() {
+    public String getPubDate() {
         return pubDate;
     }
 
-    public void setPubDate(Date pubDate) {
+    public void setPubDate(String pubDate) {
         this.pubDate = pubDate;
     }
 

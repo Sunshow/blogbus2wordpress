@@ -1,6 +1,5 @@
 package net.sunshow.tools.blogbus2wordpress.bean;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,7 +11,7 @@ import java.util.List;
 public class BlogItem {
 
     private String title;
-    private Date pubDate;
+    private String pubDate;
     private String creator;
     private String content;
     private String excerpt;
@@ -31,11 +30,11 @@ public class BlogItem {
         this.title = title;
     }
 
-    public Date getPubDate() {
+    public String getPubDate() {
         return pubDate;
     }
 
-    public void setPubDate(Date pubDate) {
+    public void setPubDate(String pubDate) {
         this.pubDate = pubDate;
     }
 

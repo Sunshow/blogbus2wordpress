@@ -7,8 +7,10 @@ package net.sunshow.tools.blogbus2wordpress.bean;
  * Time: 9:03 AM
  */
 public class BlogItemAttachment {
-    String link;    // 链接地址
-    String src;     // 附件地址
+
+    private String filename;
+    private String link;    // 链接地址
+    private String src;     // 附件地址
 
     public String getLink() {
         return link;
@@ -24,5 +26,13 @@ public class BlogItemAttachment {
 
     public void setSrc(String src) {
         this.src = src;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }
