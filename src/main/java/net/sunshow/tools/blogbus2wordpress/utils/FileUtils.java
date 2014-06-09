@@ -121,4 +121,29 @@ public class FileUtils {
 
 		return content;
 	}
+
+    public static String readFile(InputStream inputStream, String encoding) throws IOException{
+        encoding = encoding.trim();
+        StringBuffer sb = new StringBuffer("");
+        String content = null;
+
+        InputStreamReader isr;
+        if (encoding.isEmpty()) {
+            isr = new InputStreamReader(inputStream);
+        } else {
+            isr = new InputStreamReader(inputStream, encoding);
+        }
+        BufferedReader br = new BufferedReader(isr);
+
+        String data = "";
+        while ((data = br.readLine()) != null) {
+            sb.append(data + " ");
+        }
+        content = sb.toString();
+
+        br.close();
+        isr.close();
+
+        return content;
+    }
 }

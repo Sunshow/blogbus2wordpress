@@ -1,0 +1,11 @@
+<wp:comment>
+    <wp:comment_id>%%COMMENT_ID%%</wp:comment_id>
+    <wp:comment_author><![CDATA[%%COMMENT_AUTHOR%%]]></wp:comment_author>
+    <wp:comment_author_url>%%COMMENT_URL%%</wp:comment_author_url>
+    <wp:comment_date>%%COMMENT_TIME%%</wp:comment_date>
+    <wp:comment_content><![CDATA[%%COMMENT_CONTENT%%]]></wp:comment_content>
+    <wp:comment_approved>1</wp:comment_approved>
+    <wp:comment_type></wp:comment_type>
+    <wp:comment_parent>0</wp:comment_parent>
+    <wp:comment_user_id>0</wp:comment_user_id>
+</wp:comment>
